@@ -1,7 +1,7 @@
+import SimpleLayout from "../layout/SimpleLayout";
+
 function Home() {
-  return (
-    <div>Home</div>
-  )
+  return <SimpleLayout>Home</SimpleLayout>;
 }
 
-export default Home
+export default Home;
