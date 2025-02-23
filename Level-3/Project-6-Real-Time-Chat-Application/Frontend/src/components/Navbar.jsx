@@ -2,7 +2,7 @@ import { Link } from "react-router";
 
 function Navbar() {
   return (
-    <nav className="flex h-14 w-full items-center justify-between bg-green-400 px-2 sm:px-4">
+    <nav className="sticky top-0 z-50 flex h-14 w-full items-center justify-between bg-green-400 px-2 sm:px-4">
       <div className="flex items-center justify-center gap-1 sm:gap-2">
         <img src="/icon.svg" alt="chat-icon" className="h-10 w-10" />
         <p className="text-xl font-medium text-orange-600 sm:text-2xl">
