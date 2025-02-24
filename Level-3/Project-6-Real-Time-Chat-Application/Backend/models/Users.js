@@ -3,6 +3,7 @@ const userSchema = new Schema(
   {
     username: {
       type: String,
+      unique: true,
       required: true
     },
     status: {
@@ -12,6 +13,7 @@ const userSchema = new Schema(
     },
     ipAddress: {
       type: String,
+      unique: true,
       required: true
     }
   },
