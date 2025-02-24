@@ -26,7 +26,7 @@ const FeatureAccordion = () => {
   ];
 
   return (
-    <div className="mx-auto w-[80%]">
+    <div className="mx-auto w-[95%] sm:w-[80%]">
       {items.map((item, index) => (
         <div key={index} className="border-b border-gray-300">
           <button
