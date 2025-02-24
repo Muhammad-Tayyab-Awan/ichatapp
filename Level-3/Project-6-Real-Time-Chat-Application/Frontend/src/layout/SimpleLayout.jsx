@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 
 function SimpleLayout({ children }) {
   return (
-    <div className="h-full w-full bg-white">
+    <div className="mx-auto h-full w-full max-w-[1536px] bg-white">
       <Navbar />
       <div className="min-h-[calc(100vh-7rem)]">{children}</div>
       <Footer />
