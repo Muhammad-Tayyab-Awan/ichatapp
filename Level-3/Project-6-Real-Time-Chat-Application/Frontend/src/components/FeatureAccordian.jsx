@@ -37,7 +37,7 @@ const FeatureAccordion = () => {
             <span>{openIndex === index ? "-" : "+"}</span>
           </button>
           <div
-            className={`overflow-hidden transition-[max-height] duration-300 ${openIndex === index ? "max-h-96 p-4" : "max-h-0"}`}
+            className={`overflow-hidden text-xs transition-[max-height] duration-300 sm:text-sm ${openIndex === index ? "max-h-96 p-4" : "max-h-0"}`}
           >
             <p className="text-gray-700">{item.content}</p>
           </div>
