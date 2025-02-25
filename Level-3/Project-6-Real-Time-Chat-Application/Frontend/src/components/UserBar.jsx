@@ -1,5 +1,8 @@
 /* eslint-disable react/prop-types */
+import { useUserModalContext } from "../context/UserModalContext";
+
 function UserBar({ username, chatStatus, lastMsg }) {
+  const { setOpen, setUsername } = useUserModalContext();
   return (
     <div className="group relative mt-2 flex h-10 w-full items-center justify-start gap-2 rounded-sm bg-white px-2 ring">
       <svg
@@ -27,7 +30,11 @@ function UserBar({ username, chatStatus, lastMsg }) {
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 448 512"
-        className="absolute right-[2%] hidden h-4 w-4 cursor-pointer group-hover:block"
+        className="absolute top-[10%] right-[2%] z-10 hidden h-4 w-4 cursor-pointer group-hover:block"
+        onClick={() => {
+          setOpen(true);
+          setUsername(username);
+        }}
       >
         <path
           fill="#000000"
