@@ -1,7 +1,7 @@
-import SimpleLayout from "../layout/SimpleLayout";
+import ChatLayout from "../layout/ChatLayout";
 
 function Chat() {
-  return <SimpleLayout>Chat</SimpleLayout>;
+  return <ChatLayout>Chat</ChatLayout>;
 }
 
 export default Chat;
