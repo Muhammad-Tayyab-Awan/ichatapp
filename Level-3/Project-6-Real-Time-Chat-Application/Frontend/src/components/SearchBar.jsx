@@ -1,22 +1,45 @@
+import { joiResolver } from "@hookform/resolvers/joi";
+import Joi from "joi";
+import { useForm } from "react-hook-form";
+
 function SearchBar() {
+  const schema = Joi.object({
+    username: Joi.string().alphanum().min(8).max(15).required(),
+  });
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting, errors },
+  } = useForm({
+    resolver: joiResolver(schema),
+    defaultValues: { username: "" },
+  });
+  const onSubmit = (data) => {
+    console.log(data);
+  };
   return (
     <form
+      onSubmit={handleSubmit(onSubmit)}
       noValidate
       autoComplete="off"
       method="POST"
-      className="absolute top-2 right-2 z-40 flex h-8 w-80 items-center justify-between rounded-full bg-purple-500 text-sm text-white"
+      className={`absolute top-2 right-2 z-40 flex h-8 w-80 items-center justify-between rounded-full bg-purple-500 text-sm text-white ${errors.username && "ring ring-red-600"}`}
     >
       <input
         type="text"
         name="username"
         id="username"
+        minLength="8"
+        maxLength="15"
         autoComplete="off"
+        {...register("username", { required: true })}
         className="w-full border-none bg-transparent p-3 text-center placeholder:text-gray-300 focus-visible:outline-hidden"
         placeholder="Search by username"
       />
       <button
         type="submit"
-        className="h-full cursor-pointer rounded-r-full bg-green-500 p-1.5"
+        disabled={isSubmitting}
+        className="h-full cursor-pointer rounded-r-full bg-green-500 p-1.5 disabled:cursor-progress"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
