@@ -2,7 +2,7 @@
 import { useForm } from "react-hook-form";
 
 function Register({ setForm }) {
-  const { register } = useForm({
+  const { handleSubmit, register } = useForm({
     defaultValues: {
       username: "",
       firstName: "",
@@ -19,6 +19,10 @@ function Register({ setForm }) {
       noValidate
       autoComplete="off"
       method="POST"
+      onSubmit={handleSubmit((data) => {
+        console.log(data);
+        setForm("otp");
+      })}
     >
       <h1 className="text-center font-medium">
         Register Now
