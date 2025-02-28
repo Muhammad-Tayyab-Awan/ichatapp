@@ -1,7 +1,7 @@
 function OTPVerification() {
   return (
     <form
-      action="POST"
+      method="POST"
       className="flex h-64 w-96 flex-col items-center justify-center gap-4 rounded-lg bg-gray-100/10 p-2 shadow-lg shadow-black backdrop-blur-xs"
     >
       <h1 className="text-center font-medium">Verify OTP</h1>
@@ -14,6 +14,7 @@ function OTPVerification() {
           min={1}
           max={9}
           maxLength="1"
+          autoFocus
           className="h-10 w-10 rounded-md bg-white text-center shadow-sm shadow-black focus-visible:outline-hidden"
         />
         <input
