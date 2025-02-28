@@ -36,7 +36,7 @@ function Home() {
         <h1 className="text-xl sm:text-2xl">Lets discover new friends</h1>
         <Link
           className="rounded-full bg-purple-400 p-2 text-sm font-medium text-white transition-all duration-300 ease-in-out hover:scale-105 sm:p-3 sm:text-base"
-          to="/chat"
+          to="/auth"
         >
           Join Now
         </Link>
