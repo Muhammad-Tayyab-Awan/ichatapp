@@ -7,7 +7,7 @@ function Footer() {
         <div className="flex items-center justify-center gap-2">
           <img src="/icon.svg" alt="logo" className="h-6 w-6" />
           <p className="text-base font-medium text-orange-600 sm:text-lg">
-            Chat Room
+            IChat
           </p>
         </div>
         <div className="flex gap-4 text-sm sm:text-base">
@@ -26,7 +26,7 @@ function Footer() {
         </div>
       </div>
       <p className="w-full text-center text-xs sm:text-sm">
-        &copy; {new Date().getFullYear()} | Chat Room | All rights reserved
+        &copy; {new Date().getFullYear()} | IChat | All rights reserved
       </p>
     </footer>
   );

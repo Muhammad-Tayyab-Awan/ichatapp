@@ -5,9 +5,7 @@ function Navbar() {
     <nav className="sticky top-0 z-50 flex h-14 w-full items-center justify-between bg-green-400 px-2 sm:px-4">
       <div className="flex items-center justify-center gap-1 sm:gap-2">
         <img src="/icon.svg" alt="chat-icon" className="h-10 w-10" />
-        <p className="text-xl font-medium text-orange-600 sm:text-2xl">
-          Chat Room
-        </p>
+        <p className="text-xl font-medium text-orange-600 sm:text-2xl">IChat</p>
       </div>
       <div className="flex items-center justify-around gap-3 text-orange-600 sm:gap-6">
         <Link
