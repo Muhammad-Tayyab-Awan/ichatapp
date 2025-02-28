@@ -30,7 +30,7 @@ function Register({ setForm }) {
               setForm("login");
             }}
           >
-            Login
+            Sign In
           </button>
         </p>
       </h1>
@@ -61,13 +61,13 @@ function Register({ setForm }) {
           type="text"
           name="username"
           id="username"
-          {...register("username", { required: true })}
           autoComplete="off"
+          {...register("username", { required: true })}
           placeholder="Username here"
           className="w-[75%] rounded-sm bg-white px-2 py-1 text-center text-xs text-black shadow-sm shadow-black transition-shadow duration-200 ease-in-out placeholder:text-gray-950 focus-visible:shadow-md focus-visible:outline-hidden"
         />
       </div>
-      <div className="flex w-full flex-col items-center justify-center">
+      <div className="flex w-full items-center justify-center">
         <input
           type="email"
           name="email"
@@ -78,24 +78,24 @@ function Register({ setForm }) {
           className="w-[75%] rounded-sm bg-white px-2 py-1 text-center text-xs text-black shadow-sm shadow-black transition-shadow duration-200 ease-in-out placeholder:text-gray-950 focus-visible:shadow-md focus-visible:outline-hidden"
         />
       </div>
-      <div className="flex w-full flex-col items-center justify-center">
+      <div className="flex w-full items-center justify-center">
         <input
           type="password"
           name="password"
           id="password"
-          {...register("password", { required: true })}
           autoComplete="off"
+          {...register("password", { required: true })}
           placeholder="Password here"
           className="w-[75%] rounded-sm bg-white px-2 py-1 text-center text-xs text-black shadow-sm shadow-black transition-shadow duration-200 ease-in-out placeholder:text-gray-950 focus-visible:shadow-md focus-visible:outline-hidden"
         />
       </div>
-      <div className="flex w-full flex-col items-center justify-center text-xs">
+      <div className="flex w-full items-center justify-center text-xs">
         <input
           type="date"
           name="birthdate"
           id="birthdate"
-          {...register("birthdate", { required: true })}
           autoComplete="off"
+          {...register("birthdate", { required: true })}
           className="w-[75%] rounded-sm bg-white px-2 py-1 text-center text-xs text-black shadow-sm shadow-black transition-shadow duration-200 ease-in-out placeholder:text-gray-950 focus-visible:shadow-md focus-visible:outline-hidden"
         />
       </div>
@@ -110,7 +110,7 @@ function Register({ setForm }) {
         <input
           type="submit"
           name="submit"
-          value="Submit"
+          value="Register"
           className="cursor-pointer rounded-sm bg-white p-1 text-xs font-medium text-black shadow-sm shadow-black focus-visible:outline-hidden"
         />
       </div>
