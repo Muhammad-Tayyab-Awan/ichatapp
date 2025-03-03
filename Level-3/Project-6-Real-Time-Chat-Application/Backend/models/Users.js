@@ -6,6 +6,36 @@ const userSchema = new Schema(
       unique: true,
       required: true
     },
+    firstName: {
+      type: String,
+      required: true
+    },
+    lastName: {
+      type: String,
+      required: true
+    },
+    email: {
+      type: String,
+      unique: true,
+      required: true
+    },
+    birthdate: {
+      type: String,
+      required: true
+    },
+    gender: {
+      type: String,
+      required: true,
+      emum: ["male", "female"]
+    },
+    password: {
+      type: String,
+      required: true
+    },
+    verified: {
+      type: Boolean,
+      default: false
+    },
     status: {
       type: String,
       enum: ["blocked", "simple"],
