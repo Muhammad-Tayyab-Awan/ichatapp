@@ -6,7 +6,7 @@ const otpSchema = new Schema(
     status: {
       type: String,
       enum: ["verified", "notVerified"],
-      default: "verified"
+      default: "notVerified"
     }
   },
   { timestamps: true }

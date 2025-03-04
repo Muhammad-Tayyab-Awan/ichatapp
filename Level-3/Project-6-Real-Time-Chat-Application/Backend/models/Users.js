@@ -40,11 +40,6 @@ const userSchema = new Schema(
       type: String,
       enum: ["blocked", "simple"],
       default: "simple"
-    },
-    ipAddress: {
-      type: String,
-      unique: true,
-      required: true
     }
   },
   { timestamps: true }
