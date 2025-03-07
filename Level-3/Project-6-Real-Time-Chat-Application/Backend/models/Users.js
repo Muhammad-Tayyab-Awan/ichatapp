@@ -1,4 +1,10 @@
 import mongoose, { Schema } from "mongoose";
+const friendsSchema = new Schema(
+  {
+    userId: { type: Schema.Types.ObjectId, required: true, ref: "user" }
+  },
+  { timestamps: true }
+);
 const userSchema = new Schema(
   {
     username: {
@@ -40,6 +46,10 @@ const userSchema = new Schema(
       type: String,
       enum: ["blocked", "simple"],
       default: "simple"
+    },
+    friends: {
+      type: [friendsSchema],
+      default: []
     }
   },
   { timestamps: true }
