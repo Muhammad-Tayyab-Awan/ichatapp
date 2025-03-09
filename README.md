@@ -1,2 +1,1 @@
-# coding-samurai-internship-task
-CODING SAMURAI INTERNSHIP TASKS
+# Real Time Chat App
