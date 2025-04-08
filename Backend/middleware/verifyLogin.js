@@ -5,7 +5,6 @@ const jwtSecret = process.env.JWT_SECRET;
 const verifyLogin = async (req, res, next) => {
   try {
     const authToken = req.cookies["ichat_auth_token"];
-    console.log(authToken);
     jwt.verify(authToken, jwtSecret, async (err, decodedToken) => {
       if (err) {
         return res.status(404).json({
