@@ -274,6 +274,7 @@ router.delete("/delete", verifyLogin, async (req, res) => {
     const userId = req.userId;
     await OTP.deleteMany({ user: userId });
     await User.findByIdAndDelete(userId);
+    res.clearCookie("ichat_auth_token");
     res
       .status(200)
       .json({ success: true, message: "Your account deleted successfully" });
