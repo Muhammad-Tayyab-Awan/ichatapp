@@ -92,7 +92,7 @@ router.post(
         },
         (err) => {
           if (err) {
-            res.status(500).json({
+            return res.status(500).json({
               success: false,
               error: "Error Occurred on Server Side",
               message: err.message,
