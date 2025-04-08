@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 
 function Login({ setForm }) {
   const { register } = useForm({
-    defaultValues: { username: "", password: "" },
+    defaultValues: { email: "", password: "", rememberMe: false },
   });
   return (
     <form
@@ -28,10 +28,10 @@ function Login({ setForm }) {
       </h1>
       <div className="flex w-full items-center justify-center">
         <input
-          type="text"
-          name="username"
-          id="username"
-          {...register("username", { required: true })}
+          type="email"
+          name="email"
+          id="email"
+          {...register("email", { required: true })}
           autoComplete="off"
           placeholder="Username here"
           className="w-[75%] rounded-sm bg-white px-2 py-1 text-center text-xs text-black shadow-sm shadow-black transition-shadow duration-200 ease-in-out placeholder:text-gray-950 focus-visible:shadow-md focus-visible:outline-hidden"
@@ -52,11 +52,12 @@ function Login({ setForm }) {
         <div className="flex items-center justify-center gap-1">
           <input
             type="checkbox"
-            name="remember"
-            id="remember"
+            name="rememberMe"
+            id="rememberMe"
+            {...register("rememberMe")}
             className="outline-hidden focus-visible:outline-hidden"
           />
-          <label htmlFor="remember">Remember me</label>
+          <label htmlFor="rememberMe">Remember me</label>
         </div>
       </div>
       <div>
