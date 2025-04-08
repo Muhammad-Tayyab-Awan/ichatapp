@@ -269,6 +269,60 @@ router.get(
   },
 );
 
+router.put(
+  "/update",
+  verifyLogin,
+  [
+    body("firstName")
+      .isString()
+      .matches(/^[A-Z][a-z]{3,20}$/)
+      .optional(),
+    body("lastName")
+      .isString()
+      .matches(/^[A-Z][a-z]{3,30}$/)
+      .optional(),
+    body("gender").isString().isIn(["male", "female"]).optional(),
+    body("birthdate")
+      .isISO8601({ strict: true, strictSeparator: true })
+      .optional(),
+  ],
+  async (req, res) => {
+    try {
+      const result = validationResult(req);
+      if (!result.isEmpty()) {
+        return res.status(404).json({
+          success: false,
+          error: "Validation Error",
+          message: result.errors,
+        });
+      }
+      const userId = req.userId;
+      for (const element in req.body) {
+        if (
+          !(
+            element === "firstName" ||
+            element === "lastName" ||
+            element === "gender" ||
+            element === "birthdate"
+          )
+        ) {
+          delete req.body[element];
+        }
+      }
+      await User.findByIdAndUpdate(userId, { ...req.body });
+      res
+        .status(200)
+        .json({ success: true, message: "Your data updated successfully" });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: "Error Occurred on Server Side",
+        message: error.message,
+      });
+    }
+  },
+);
+
 router.delete("/delete", verifyLogin, async (req, res) => {
   try {
     const userId = req.userId;
