@@ -249,6 +249,11 @@ router.get(
       otpExist.status = "verified";
       await User.findByIdAndUpdate(otpExist.user, { verified: true });
       await otpExist.save();
+      const authToken = jwt.sign(
+        { userId: otpExist.user.toString() },
+        jwtSecret,
+      );
+      res.cookie("ichat_auth_token", authToken);
       return res.status(200).json({
         success: true,
         message: "Your account verified successfully",
