@@ -1,9 +1,12 @@
+/* eslint-disable no-undef */
 import express from "express";
 import User from "../models/Users.js";
 import OTP from "../models/OTP.js";
 import bcrypt from "bcryptjs";
 import { body, param, validationResult } from "express-validator";
 import transporter from "../utils/mailTransporter.js";
+import jwt from "jsonwebtoken";
+const jwtSecret = process.env.JWT_SECRET;
 
 const router = express.Router();
 router.post(
@@ -26,10 +29,10 @@ router.post(
         minLowercase: 3,
         minNumbers: 2,
         minSymbols: 1,
-        minUppercase: 2
+        minUppercase: 2,
       })
       .isLength({ min: 8, max: 15 }),
-    body("birthdate").isISO8601({ strict: true, strictSeparator: true })
+    body("birthdate").isISO8601({ strict: true, strictSeparator: true }),
   ],
   async (req, res) => {
     try {
@@ -38,7 +41,7 @@ router.post(
         return res.status(400).json({
           success: false,
           error: "Validation Error",
-          message: result.errors
+          message: result.errors,
         });
       }
       const {
@@ -48,7 +51,7 @@ router.post(
         birthdate,
         email,
         password,
-        gender
+        gender,
       } = req.body;
       const usernameExist = await User.findOne({ username });
       const emailExist = await User.findOne({ email });
@@ -56,7 +59,7 @@ router.post(
         return res.status(400).json({
           success: false,
           error: "User Already Exists",
-          message: "User Already Exists"
+          message: "User Already Exists",
         });
       }
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -67,49 +70,160 @@ router.post(
         birthdate,
         email,
         password: hashedPassword,
-        gender
+        gender,
       });
       const newOTP = parseInt(
         `${Math.floor(Math.random() * 10)}${Math.floor(
-          Math.random() * 10
+          Math.random() * 10,
         )}${Math.floor(Math.random() * 10)}${Math.floor(
-          Math.random() * 10
+          Math.random() * 10,
         )}${Math.floor(Math.random() * 10)}${Math.floor(Math.random() * 10)}`,
-        10
+        10,
       );
       await OTP.create({ code: newOTP, user: newUser.id });
-      const htmlMessage = `<h1>OTP</h1><p>Your OTP is for IChat application is <strong>${newOTP}</strong></p>`;
+      const htmlMessage = `<h1>OTP</h1><p>Your OTP for IChat application is <strong>${newOTP}</strong></p>`;
       transporter.sendMail(
         {
           subject: "OTP",
           sender: "IChat Application",
           to: newUser.email,
-          html: htmlMessage
+          html: htmlMessage,
         },
         (err) => {
           if (err) {
             res.status(500).json({
               success: false,
               error: "Error Occurred on Server Side",
-              message: err.message
+              message: err.message,
             });
           }
           res.status(200).json({
             success: true,
             message:
-              "For your verification OTP is sent successfully, check your mailbox"
+              "For your verification OTP is sent successfully, check your mailbox",
           });
-        }
+        },
       );
     } catch (error) {
       console.log(error);
       res.status(500).json({
         success: false,
         error: "Error Occurred on Server Side",
-        message: error.message
+        message: error.message,
       });
     }
-  }
+  },
+);
+
+router.post(
+  "/login",
+  [
+    body("email").isEmail(),
+    body("password")
+      .isStrongPassword({
+        minLength: 8,
+        minLowercase: 3,
+        minNumbers: 2,
+        minSymbols: 1,
+        minUppercase: 2,
+      })
+      .isLength({ min: 8, max: 15 }),
+    body("rememberMe").isBoolean(),
+  ],
+  async (req, res) => {
+    try {
+      const result = validationResult(req);
+      if (!result.isEmpty()) {
+        return res.status(404).json({
+          success: false,
+          error: "Wrong Credentials",
+          message: result.errors,
+        });
+      }
+      const userFound = await User.findOne({ email: req.body.email });
+      if (!userFound) {
+        return res.status(404).json({
+          success: false,
+          error: "Wrong Credentials",
+          message: "No user found",
+        });
+      }
+      const passwordCorrect = await bcrypt.compare(
+        req.body.password,
+        userFound.password,
+      );
+      if (!passwordCorrect) {
+        return res.status(404).json({
+          success: false,
+          error: "Wrong Credentials",
+          message: "Please provide correct credentials to login",
+        });
+      }
+      if (!userFound.verified) {
+        let otp = await OTP.findOne({
+          user: userFound.id,
+          status: "notVerified",
+        });
+        if (!otp) {
+          const newOTP = parseInt(
+            `${Math.floor(Math.random() * 10)}${Math.floor(
+              Math.random() * 10,
+            )}${Math.floor(Math.random() * 10)}${Math.floor(
+              Math.random() * 10,
+            )}${Math.floor(Math.random() * 10)}${Math.floor(Math.random() * 10)}`,
+            10,
+          );
+          otp = await OTP.create({ code: newOTP, user: userFound.id });
+        }
+        const htmlMessage = `<h1>OTP</h1><p>Your OTP for IChat application is <strong>${otp.code}</strong></p>`;
+        transporter.sendMail(
+          {
+            subject: "OTP",
+            sender: "IChat Application",
+            to: userFound.email,
+            html: htmlMessage,
+          },
+          (err) => {
+            if (err) {
+              return res.status(500).json({
+                success: false,
+                error: "Error Occurred on Server Side",
+                message: err.message,
+              });
+            }
+            return res.status(200).json({
+              success: true,
+              message:
+                "For your verification OTP is sent successfully, check your mailbox",
+            });
+          },
+        );
+      } else {
+        const authToken = jwt.sign(
+          { userId: userFound.id.toString() },
+          jwtSecret,
+        );
+        if (req.body.rememberMe) {
+          res.cookie("ichat_auth_token", authToken, {
+            maxAge: 2592000000,
+            httpOnly: true,
+          });
+        } else {
+          res.cookie("ichat_auth_token", authToken);
+        }
+        res.status(200).json({
+          success: true,
+          message: "Welcome Back! you logged in successfully",
+        });
+      }
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: "Error Occurred on Server Side",
+        message: error.message,
+      });
+    }
+  },
 );
 
 router.get(
@@ -122,7 +236,7 @@ router.get(
         return res.status(400).json({
           success: false,
           error: "Validation Error",
-          message: result.errors
+          message: result.errors,
         });
       }
       const { otp } = req.params;
@@ -137,15 +251,15 @@ router.get(
       await otpExist.save();
       return res.status(200).json({
         success: true,
-        message: "Your account verified successfully"
+        message: "Your account verified successfully",
       });
     } catch (error) {
       res.status(500).json({
         success: false,
         error: "Error Occurred on Server Side",
-        message: error.message
+        message: error.message,
       });
     }
-  }
+  },
 );
 export default router;
