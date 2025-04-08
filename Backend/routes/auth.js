@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 import { body, param, validationResult } from "express-validator";
 import transporter from "../utils/mailTransporter.js";
 import jwt from "jsonwebtoken";
+import verifyLogin from "../middleware/verifyLogin.js";
 const jwtSecret = process.env.JWT_SECRET;
 
 const router = express.Router();
@@ -267,4 +268,22 @@ router.get(
     }
   },
 );
+
+router.delete("/delete", verifyLogin, async (req, res) => {
+  try {
+    const userId = req.userId;
+    await OTP.deleteMany({ user: userId });
+    await User.findByIdAndDelete(userId);
+    res
+      .status(200)
+      .json({ success: true, message: "Your account deleted successfully" });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: "Error Occurred on Server Side",
+      message: error.message,
+    });
+  }
+});
+
 export default router;
