@@ -2,6 +2,7 @@
 import express from "express";
 import User from "../models/Users.js";
 import OTP from "../models/OTP.js";
+import Report from "../models/Reports.js";
 import bcrypt from "bcryptjs";
 import { body, param, validationResult } from "express-validator";
 import transporter from "../utils/mailTransporter.js";
@@ -328,6 +329,8 @@ router.delete("/delete", verifyLogin, async (req, res) => {
     const userId = req.userId;
     await OTP.deleteMany({ user: userId });
     await User.findByIdAndDelete(userId);
+    await Report.deleteMany({ userId });
+    await Report.deleteMany({ againstUserId: userId });
     res.clearCookie("ichat_auth_token");
     res
       .status(200)
