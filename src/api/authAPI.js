@@ -1,5 +1,15 @@
 const API_URI = import.meta.env.VITE_API_URI;
 
+async function register(credentials) {
+  const jsonResponse = await fetch(`${API_URI}/auth/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ...credentials }),
+  });
+  const response = await jsonResponse.json();
+  return response;
+}
+
 async function login(credentials) {
   const jsonResponse = await fetch(`${API_URI}/auth/login`, {
     method: "POST",
@@ -20,5 +30,10 @@ async function otpVerification(otp) {
   return response;
 }
 
-const authAPI = { login: login, otpVerification: otpVerification };
+const authAPI = {
+  login: login,
+  otpVerification: otpVerification,
+  register: register,
+};
+
 export default authAPI;
