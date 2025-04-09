@@ -107,7 +107,6 @@ router.post(
         },
       );
     } catch (error) {
-      console.log(error);
       res.status(500).json({
         success: false,
         error: "Error Occurred on Server Side",
@@ -194,7 +193,7 @@ router.post(
               });
             }
             return res.status(200).json({
-              success: true,
+              success: "otp",
               message:
                 "For your verification OTP is sent successfully, check your mailbox",
             });
