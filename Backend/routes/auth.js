@@ -100,7 +100,7 @@ router.post(
             });
           }
           res.status(200).json({
-            success: true,
+            success: "otp",
             message:
               "For your verification OTP is sent successfully, check your mailbox",
           });
