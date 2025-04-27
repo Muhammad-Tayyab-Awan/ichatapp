@@ -39,11 +39,21 @@ async function loginStatus() {
   return response;
 }
 
+async function logout() {
+  const jsonResponse = await fetch(`${API_URI}/auth/logout`, {
+    method: "GET",
+    credentials: "include",
+  });
+  const response = await jsonResponse.json();
+  return response;
+}
+
 const authAPI = {
   login,
   otpVerification,
   register,
   loginStatus,
+  logout,
 };
 
 export default authAPI;
