@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import { useEffect } from "react";
 import Joi from "joi";
 import { joiResolver } from "@hookform/resolvers/joi";
+import toast from "react-hot-toast";
 
 const schema = Joi.object({
   email: Joi.string()
@@ -45,9 +46,13 @@ function Login({ setForm }) {
     reset();
     if (response.success === "otp") {
       setForm("otp");
-    } else if (response.success) {
-      navigator("/chat");
+      return;
     }
+    if (response.success) {
+      navigator("/chat");
+      return;
+    }
+    toast.error(response.error);
   };
   return (
     <form
