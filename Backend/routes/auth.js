@@ -323,6 +323,19 @@ router.put(
   },
 );
 
+router.get("/logout", verifyLogin, async (req, res) => {
+  try {
+    res.clearCookie("ichat_auth_token");
+    res.status(200).json({ success: true, message: "Successfully logged out" });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: "Error Occurred on Server Side",
+      message: error.message,
+    });
+  }
+});
+
 router.delete("/delete", verifyLogin, async (req, res) => {
   try {
     const userId = req.userId;
