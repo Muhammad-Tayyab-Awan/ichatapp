@@ -30,10 +30,20 @@ async function otpVerification(otp) {
   return response;
 }
 
+async function loginStatus() {
+  const jsonResponse = await fetch(`${API_URI}/auth/login-status`, {
+    method: "GET",
+    credentials: "include",
+  });
+  const response = await jsonResponse.json();
+  return response;
+}
+
 const authAPI = {
-  login: login,
-  otpVerification: otpVerification,
-  register: register,
+  login,
+  otpVerification,
+  register,
+  loginStatus,
 };
 
 export default authAPI;
