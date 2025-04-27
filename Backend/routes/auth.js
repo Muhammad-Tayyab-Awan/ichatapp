@@ -8,6 +8,7 @@ import { body, param, validationResult } from "express-validator";
 import transporter from "../utils/mailTransporter.js";
 import jwt from "jsonwebtoken";
 import verifyLogin from "../middleware/verifyLogin.js";
+import loginStatusCheck from "../middleware/loginStatusCheck.js";
 const jwtSecret = process.env.JWT_SECRET;
 
 const router = express.Router();
@@ -327,6 +328,22 @@ router.get("/logout", verifyLogin, async (req, res) => {
   try {
     res.clearCookie("ichat_auth_token");
     res.status(200).json({ success: true, message: "Successfully logged out" });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: "Error Occurred on Server Side",
+      message: error.message,
+    });
+  }
+});
+
+router.get("/login-status", loginStatusCheck, async (req, res) => {
+  try {
+    const { loginStatus } = req;
+    if (loginStatus.loggedIn)
+      return res
+        .status(200)
+        .json({ loggedIn: true, userId: loginStatus.userId });
   } catch (error) {
     res.status(500).json({
       success: false,
